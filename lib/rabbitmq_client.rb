@@ -11,7 +11,7 @@ class RabbitmqClient
     self.channel = connection.create_channel
   end
 
-  def publish(options = {}, message)
+  def publish(message, options = {})
     default_options = { durable: true, persistent: true }
     options = default_options.merge(options)
 
@@ -19,24 +19,24 @@ class RabbitmqClient
     queue.publish(message.to_json, persistent: options[:persistent])
   end
 
-  def subscribe(options = {}, &block)
+  def subscribe(options = {}, &)
     default_options = { durable: true, manual_ack: true, block: true }
     options = default_options.merge(options)
     channel.prefetch(options[:prefetch]) if options[:prefetch]
 
     queue = channel.queue(QUEUE_NAME, durable: options[:durable])
-    queue.subscribe(manual_ack: options[:manual_ack], block: options[:block], &block)
+    queue.subscribe(manual_ack: options[:manual_ack], block: options[:block], &)
   end
 
   def ack(delivery_tag)
     channel.ack(delivery_tag)
   end
 
-  def reject(delivery_tag, requeue = false)
+  def reject(delivery_tag, requeue: false)
     channel.reject(delivery_tag, requeue)
   end
 
   def close
-    connection.close if connection
+    connection&.close
   end
 end

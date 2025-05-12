@@ -68,7 +68,7 @@ class MessageProcessorTest < Minitest::Test
   def test_start_handles_standard_error
     processor = MediaQueueConsumer.new
 
-    error = StandardError.new("Test error")
+    error = StandardError.new('Test error')
     processor.expects(:setup_signal_handlers).raises(error)
     processor.expects(:shutdown)
     processor.expects(:exit).with(1)
@@ -102,7 +102,7 @@ class MessageProcessorTest < Minitest::Test
 
     mock_downloader = mock('MediaDownloader')
     MediaDownloader.expects(:new).with(body).returns(mock_downloader)
-    mock_downloader.expects(:call).raises(StandardError.new("Download failed"))
+    mock_downloader.expects(:call).raises(StandardError.new('Download failed'))
 
     @mock_channel.expects(:reject).with('tag123', false)
 

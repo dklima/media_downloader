@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MediaQueueConsumer
   attr_accessor :rabbitmq_client
 

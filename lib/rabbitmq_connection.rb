@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RabbitmqConnection
-  attr_accessor :connection, :create_channel
+  attr_accessor :connection
 
   def initialize
     self.connection = create_connection

@@ -7,7 +7,8 @@ require_relative '../../lib/loader'
 
 class TestConfig < Minitest::Test
   def setup
-    %w[RABBITMQ_HOST RABBITMQ_PORT RABBITMQ_USER RABBITMQ_PASS RABBITMQ_VHOST RABBITMQ_QUEUE DOWNLOADER_PATH].each do |env_var|
+    %w[RABBITMQ_HOST RABBITMQ_PORT RABBITMQ_USER RABBITMQ_PASS RABBITMQ_VHOST RABBITMQ_QUEUE
+       DOWNLOADER_PATH].each do |env_var|
       ENV.delete(env_var)
     end
 
@@ -31,12 +32,14 @@ class TestConfig < Minitest::Test
     # Mock YAML.load_file
     YAML.stubs(:load_file).returns(@config_data)
     config = Config.send(:load_config)
+
     assert_equal @config_data, config
   end
 
   def test_load_config_with_array
     array_config = [
-      { 'rabbitmq' => { 'user' => 'guest', 'pass' => 'guest', 'vhost' => '/', 'queue' => 'download_queue', 'host' => 'localhost', 'port' => '5672' } },
+      { 'rabbitmq' => { 'user' => 'guest', 'pass' => 'guest', 'vhost' => '/', 'queue' => 'download_queue',
+                        'host' => 'localhost', 'port' => '5672' } },
       { 'downloader' => { 'path' => '/tmp/downloads' } }
     ]
     expected_merged = {
@@ -55,6 +58,7 @@ class TestConfig < Minitest::Test
 
     YAML.stubs(:load_file).returns(array_config)
     config = Config.send(:load_config)
+
     assert_equal expected_merged, config
   end
 
@@ -82,6 +86,7 @@ class TestConfig < Minitest::Test
 
     begin
       result = Config.send(:env_or_config, 'RABBITMQ_HOST', 'rabbitmq', 'host')
+
       assert_equal 'env_host', result
     ensure
       # restore original CONFIG
@@ -97,6 +102,7 @@ class TestConfig < Minitest::Test
 
     begin
       result = Config.send(:env_or_config, 'RABBITMQ_HOST', 'rabbitmq', 'host')
+
       assert_equal 'localhost', result
     ensure
       Config.send(:remove_const, :CONFIG)
@@ -141,6 +147,7 @@ class TestConfig < Minitest::Test
       assert_equal 'test_host', Config.rabbitmq_host
 
       ENV.delete('RABBITMQ_HOST')
+
       assert_equal 'localhost', Config.rabbitmq_host
     end
   end
@@ -152,6 +159,7 @@ class TestConfig < Minitest::Test
       assert_equal '15672', Config.rabbitmq_port
 
       ENV.delete('RABBITMQ_PORT')
+
       assert_equal '5672', Config.rabbitmq_port
     end
   end
@@ -163,6 +171,7 @@ class TestConfig < Minitest::Test
       assert_equal 'admin', Config.rabbitmq_user
 
       ENV.delete('RABBITMQ_USER')
+
       assert_equal 'guest', Config.rabbitmq_user
     end
   end
@@ -174,6 +183,7 @@ class TestConfig < Minitest::Test
       assert_equal 'secret', Config.rabbitmq_pass
 
       ENV.delete('RABBITMQ_PASS')
+
       assert_equal 'guest', Config.rabbitmq_pass
     end
   end
@@ -185,6 +195,7 @@ class TestConfig < Minitest::Test
       assert_equal '/test', Config.rabbitmq_vhost
 
       ENV.delete('RABBITMQ_VHOST')
+
       assert_equal '/', Config.rabbitmq_vhost
     end
   end
@@ -196,6 +207,7 @@ class TestConfig < Minitest::Test
       assert_equal 'test_queue', Config.rabbitmq_queue
 
       ENV.delete('RABBITMQ_QUEUE')
+
       assert_equal 'downloads', Config.rabbitmq_queue
     end
   end
@@ -207,6 +219,7 @@ class TestConfig < Minitest::Test
       assert_equal '/var/downloads', Config.downloader_path
 
       ENV.delete('DOWNLOADER_PATH')
+
       assert_equal '/tmp/downloads', Config.downloader_path
     end
   end

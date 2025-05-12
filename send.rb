@@ -38,7 +38,7 @@ end
 
 options = parse_command_line_options
 url = ensure_url_provided(options)
-audio_only = options.audio.nil? ? false : true
+audio_only = !options.audio.nil?
 
 message = { url: url, name: options.name, audio_only:, keep: options.keep }
 

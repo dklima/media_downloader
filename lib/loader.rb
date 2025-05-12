@@ -9,6 +9,6 @@ require 'shellwords'
 require 'tty-prompt'
 require 'yaml'
 
-Dir[File.join(__dir__, '**', '*.rb')].sort.each do |file|
+Dir[File.join(__dir__, '**', '*.rb')].each do |file|
   require_relative file unless file == __FILE__
 end
