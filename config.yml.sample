@@ -1,0 +1,23 @@
+# Configuration file for RabbitMQ and Downloader services
+
+# RabbitMQ Configuration
+# This section contains settings for connecting to a RabbitMQ message broker
+- rabbitmq:
+    # The hostname where RabbitMQ server is running
+    host: localhost
+    # The default AMQP port for RabbitMQ
+    port: 5672
+    # The virtual host to use (default is root '/')
+    vhost: /
+    # Username for authentication (default RabbitMQ credentials)
+    user: admin
+    # Password for authentication (default RabbitMQ credentials)
+    pass: something
+    # The queue name to consume messages from
+    queue: download_queue
+
+# Downloader Configuration
+# This section contains settings for the file download service
+- downloader:
+    # Directory path where downloaded files will be stored
+    path: ./medias
