@@ -1,1 +1,8 @@
+*.mp4
 .idea
+.junie
+config.yml
+docs
+medias/*
+secrets/*
+log/*
